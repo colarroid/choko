@@ -1,0 +1,195 @@
+/* ============ Layered overrides — do not modify the original bundle ============ */
+
+/* ----- Top navigation (standalone row above the hero) ----- */
+#cg-nav{
+  position:relative;z-index:50;
+  min-height:72px;box-sizing:border-box;
+  padding:24px 40px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  background:#080808;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  font-family:'JetBrains Mono','Space Mono',ui-monospace,monospace;
+  color:#f4f1ea;
+}
+#cg-nav .cg-logo{
+  display:inline-flex;align-items:center;
+  font-family:'Inter',ui-sans-serif,system-ui,sans-serif;
+  font-weight:900;font-size:34px;letter-spacing:-0.04em;line-height:1;
+  color:#f4f1ea;text-decoration:none;
+}
+#cg-nav .cg-links{display:flex;gap:36px;align-items:center}
+#cg-nav .cg-links a{
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(244,241,234,0.65);text-decoration:none;padding:6px 0;position:relative;
+  transition:color .2s;
+}
+#cg-nav .cg-links a:hover{color:#f4f1ea}
+#cg-nav .cg-links a::after{
+  content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:#f4f1ea;transition:right .25s ease;
+}
+#cg-nav .cg-links a:hover::after{right:0}
+#cg-nav .cg-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 20px;border:1px solid #f4f1ea;border-radius:50px;
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:#f4f1ea;background:transparent;text-decoration:none;
+  transition:background .2s,color .2s;
+}
+#cg-nav .cg-cta:hover{background:#f4f1ea;color:#0a0a0a}
+@media (max-width:820px){
+  #cg-nav .cg-links{display:none}
+}
+@media (max-width:520px){
+  #cg-nav{min-height:58px;padding:14px 18px}
+  #cg-nav .cg-cta{padding:8px 14px;font-size:10px;letter-spacing:.18em}
+  #cg-nav .cg-logo{font-size:28px;letter-spacing:-0.04em}
+}
+
+/* The original React nav is fixed inside the hero. The replacement above is
+   the only navigation bar, so the hero can begin in its own row. */
+#root > div > nav{
+  display:none !important;
+}
+
+/* keep the hero below the standalone nav */
+#root{padding-top:0}
+
+/* ----- Full-bleed hero photo ----- */
+#cg-hero-bg{
+  display:none;
+}
+
+/* The first React section is the hero. Put the complete performance photo on
+   the section itself instead of layering a fixed image over the whole page. */
+#root > div > section:first-of-type{
+  background-image:
+    linear-gradient(180deg, rgba(8,8,8,0.12) 0%, rgba(8,8,8,0.2) 48%, rgba(8,8,8,0.9) 100%),
+    url('/assets/hero-bg.jpg') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+
+/* Remove the previous illustrated foreground so the full photo is the hero. */
+#root > div > section:first-of-type > div:first-child{
+  display:none !important;
+}
+
+#root > div > section:nth-of-type(4){
+  width:100% !important;
+  max-width:1200px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  box-sizing:border-box;
+}
+
+#root{position:relative;z-index:1}
+
+/* ----- Use one vertical page scroller ----- */
+html,body{
+  height:auto !important;
+  min-height:100%;
+  overflow-y:auto !important;
+}
+#root,
+#root > div{
+  height:auto !important;
+  min-height:100%;
+  overflow-y:visible !important;
+}
+body{
+  overflow-x:hidden;
+}
+
+/* ----- Center the About section copy ----- */
+/* Target the <section> whose inline style starts with "padding:6rem 2rem 5rem" and has max-width 960px */
+#root section[style*="padding: 6rem 2rem 5rem"][style*="max-width: 960px"]{
+  margin-left:auto !important;
+  margin-right:auto !important;
+  text-align:center !important;
+}
+#root section[style*="padding: 6rem 2rem 5rem"][style*="max-width: 960px"] > div[style*="flex-wrap: wrap"]{
+  justify-content:center !important;
+}
+
+/* ----- Contact section: two-column layout with portrait on the right ----- */
+body.cg-contact-styled #cg-contact-section{
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;
+  align-items:center;
+  max-width:1200px;margin:0 auto;
+  padding:6rem 2rem !important;
+}
+body.cg-contact-styled #cg-contact-section > *{min-width:0}
+#cg-contact-portrait{
+  position:relative;width:100%;aspect-ratio:4/5;
+  border-radius:20px;overflow:hidden;background:#1a1a1a;
+  box-shadow:0 30px 80px rgba(0,0,0,0.55);
+}
+#cg-contact-portrait .cg-slide{
+  position:absolute;inset:0;background-size:cover;background-position:center;
+  opacity:0;transition:opacity 1.2s ease;
+}
+#cg-contact-portrait .cg-slide.active{opacity:1}
+#cg-contact-portrait .cg-dots{
+  position:absolute;left:0;right:0;bottom:18px;display:flex;justify-content:center;gap:8px;z-index:2;
+}
+#cg-contact-portrait .cg-dots button{
+  width:24px;height:3px;border-radius:2px;background:rgba(255,255,255,0.35);border:0;cursor:pointer;padding:0;
+  transition:background .25s,width .25s;
+}
+#cg-contact-portrait .cg-dots button.active{background:#fff;width:36px}
+@media (max-width:880px){
+  body.cg-contact-styled #cg-contact-section{grid-template-columns:1fr;gap:48px;padding:4rem 1.5rem !important;}
+}
+
+/* ----- Responsive layout safeguards ----- */
+@media (max-width:700px){
+  #cg-nav{
+    min-height:62px;
+    padding:16px 20px;
+  }
+  #cg-nav .cg-logo{font-size:30px}
+  #cg-nav .cg-cta{
+    padding:9px 13px;
+    font-size:9px;
+    letter-spacing:.12em;
+    white-space:nowrap;
+  }
+
+  #root > div > section:first-of-type{
+    min-height:calc(100svh - 62px) !important;
+    height:auto !important;
+    padding-top:4rem;
+  }
+  #root > div > section:first-of-type h1{
+    font-size:clamp(3rem,16vw,6rem) !important;
+    overflow-wrap:anywhere;
+  }
+
+  #root > div > section:nth-of-type(2),
+  #root > div > section:nth-of-type(3),
+  #root > div > section:nth-of-type(4),
+  #root > div > section:nth-of-type(5){
+    width:100% !important;
+    max-width:100% !important;
+    padding-left:1.25rem !important;
+    padding-right:1.25rem !important;
+  }
+  #root > div > section:nth-of-type(4){
+    margin-left:0 !important;
+    margin-right:0 !important;
+  }
+}
+
+@media (max-width:420px){
+  #cg-nav{padding-left:14px;padding-right:14px}
+  #cg-nav .cg-logo{font-size:27px}
+  #cg-nav .cg-cta{padding:8px 10px;font-size:8px}
+
+  body.cg-contact-styled #cg-contact-section{
+    gap:32px;
+    padding-top:3.5rem !important;
+    padding-bottom:3.5rem !important;
+  }
+  #cg-contact-portrait{border-radius:14px}
+}
